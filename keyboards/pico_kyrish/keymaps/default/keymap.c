@@ -12,10 +12,25 @@ enum layer_number {
   _KEYPAD,
 };
 
+
+/* LAYER SWITCHING 
+ *  
+ * DF(layer)       Set the base (default) layer
+ * MO(layer)       Momentarily turn on layer when pressed (requires KC_TRNS on destination layer)
+ * OSL(layer)      Momentarily activates layer until a key is pressed. See One Shot Keys for details.
+ * LM(layer, mod)  Momentarily turn on layer (like MO) with mod active as well.
+ * LT(layer, kc)   Turn on layer when held, kc when tapped
+ * TG(layer)       Toggle layer on or off
+ * TO(layer)       Turns on layer and turns off all other layers, except the default layer
+ * TT(layer)       Normally acts like MO unless it's tapped multiple times, which toggles layer on
+ * 
+ * ref: https://docusaurus.qmk.fm/feature_layers#switching-and-toggling-layers
+ */
+
+
 // custom defined key codes
 #define mo_tg_raise     TT(_RAISE)
 #define ctrl_esc        LCTL_T(KC_ESC) 
-#define ctrl_bs         LCTL_T(KC_BKSP) 
 #define kp_tab          LT(_KEYPAD, KC_TAB)
 #define lowers_bs       LT(_LOWER, KC_BSPC)
 #define l_shft          OSM(MOD_LSFT)
@@ -28,19 +43,16 @@ enum layer_number {
 // qmk keycodes
 #define tgl_boot        QK_BOOT     // put into bootloader mode for flashing
 #define reset_kb        QK_RBT      // reset keeb. does NOT put in bootloader
-#define eeprom_clear    EE_CLR
-#define qmk_make        QK_MAKE
 
-#define pause           KC_PAUSE
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // COLEMAK base layer
     [_COLEMAK] = LAYOUT_ortho_4x12(
-        KC_TAB,     KC_Q,           KC_W,           KC_F,           KC_P,           KC_B,                                                          KC_J,           KC_L,           KC_U,           KC_Y,           KC_SCLN,        KC_QUOT,
+        kp_tab,     KC_Q,           KC_W,           KC_F,           KC_P,           KC_B,                                                          KC_J,           KC_L,           KC_U,           KC_Y,           KC_SCLN,        KC_QUOT,
         ctrl_esc,   LGUI_T(KC_A),   LALT_T(KC_R),   LSFT_T(KC_S),   LCTL_T(KC_T),   MEH_T(KC_G),                                                   HYPR_T(KC_M),   LCTL_T(KC_N),   LSFT_T(KC_E),   LALT_T(KC_I),   LGUI_T(KC_O),   KC_MINS,
-        l_shft,     KC_Z,           KC_X,           KC_C,           KC_D,           KC_V,          esc,        KC_DEL,   QK_LEAD,    KC_BSPC,      KC_K,           KC_H,           KC_COMM,        KC_DOT,         KC_SLSH,        KC_EQL,
+        l_shft,     KC_Z,           KC_X,           KC_C,           KC_D,           KC_V,          ctrl_esc,   KC_DEL,   QK_LEAD,    KC_BSPC,      KC_K,           KC_H,           KC_COMM,        KC_DOT,         KC_SLSH,        KC_EQL,
                                                                     LALT_T(KC_ENT), KC_LGUI,       lowers_bs,  KC_SPC,   ent_sft,    mo_tg_raise,  KC_LGUI,        KC_PSLS
     ),
 
@@ -48,31 +60,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LOWER] = LAYOUT_ortho_4x12(
         KC_CIRC,    KC_AMPR,         KC_ASTR,        KC_LPRN,         KC_RPRN,        KC_BSPC,                                                      KC_LBRC,     KC_F7,       KC_F8,        KC_F9,        KC_LPRN,        KC_RPRN,
         KC_GRV,     LGUI_T(KC_EXLM), LALT_T(KC_AT),  LSFT_T(KC_HASH), CTL_T(KC_DLR),  MEH_T(KC_PERC),                                               KC_RBRC,     KC_F4,       KC_F5,        KC_F6,        l_flower,       XXXXXXX,
-        KC_BTN1,    KC_MS_L,         KC_MS_D,        KC_MS_U,         KC_MS_R,        KC_BTN2,        XXXXXXX,     KC_BSLS,   KC_TILD,   KC_PIPE,   KC_SLSH,     KC_F1,       KC_F2,        KC_F3,        r_flower,       XXXXXXX,
+        KC_BTN1,    KC_MS_L,         KC_MS_D,        KC_MS_U,         KC_MS_R,        KC_BTN2,        _______,     KC_BSLS,   KC_TILD,   KC_PIPE,   KC_SLSH,     KC_F1,       KC_F2,        KC_F3,        r_flower,       XXXXXXX,
                                                                       _______,        _______,        _______,     _______,   _______,   _______,   _______,     _______
     ),
 
     // Raise (nav & related)
     [_RAISE] = LAYOUT_ortho_4x12(
         KC_BTN1,     KC_MS_L,        KC_MS_D,        KC_MS_U,       KC_MS_R,        KC_BTN2,                                                      KC_PGUP,        KC_HOME,        KC_UP,          KC_END,         KC_MS_WH_UP,    KC_BTN1,
-        XXXXXXX,     KC_LGUI,        KC_LALT,        KC_LSFT,       KC_LCTL,        KC_FIND,                                                      KC_PGDN,        KC_LEFT,        KC_DOWN,        KC_RIGHT,       KC_MS_WH_DOWN,  KC_PSCR,
-        XXXXXXX,     KC_UNDO,        KC_CUT,         KC_COPY,       XXXXXXX,        KC_PASTE,      _______,    _______,  _______,    _______,     XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,
+        _______,     KC_LGUI,        KC_LALT,        KC_LSFT,       KC_LCTL,        KC_FIND,                                                      KC_PGDN,        KC_LEFT,        KC_DOWN,        KC_RIGHT,       KC_MS_WH_DOWN,  KC_PSCR,
+        _______,     KC_UNDO,        KC_CUT,         KC_COPY,       XXXXXXX,        KC_PASTE,      _______,    _______,  _______,    _______,     XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,
                                                                     _______,        _______,       _______,    _______,  _______,    _______,     _______,        _______
     ),
 
     // Adjust 
     [_ADJUST] = LAYOUT_ortho_4x12(
-        XXXXXXX,     XXXXXXX,        XXXXXXX,        XXXXXXX,       XXXXXXX,        XXXXXXX,                                                      XXXXXXX,        KC_F10,         KC_F11,         KC_F12,        XXXXXXX,        XXXXXXX,
-        XXXXXXX,     XXXXXXX,        XXXXXXX,        XXXXXXX,       XXXXXXX,        XXXXXXX,                                                      XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,
-        XXXXXXX,     XXXXXXX,        XXXXXXX,        XXXXXXX,       XXXXXXX,        XXXXXXX,     _______,    _______,  _______,    _______,       XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,
+        _______,     XXXXXXX,        XXXXXXX,        XXXXXXX,       XXXXXXX,        XXXXXXX,                                                      XXXXXXX,        KC_F10,         KC_F11,         KC_F12,         XXXXXXX,        XXXXXXX,
+        _______,     XXXXXXX,        XXXXXXX,        XXXXXXX,       XXXXXXX,        XXXXXXX,                                                      XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,
+        _______,     XXXXXXX,        XXXXXXX,        XXXXXXX,       XXXXXXX,        XXXXXXX,     _______,    _______,  _______,    _______,       XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,        XXXXXXX,
                                                                     _______,        _______,     _______,    _______,  _______,    _______,       _______,        _______
     ),
 
-    // Adjust 
+    // keypad with media control 
     [_KEYPAD] = LAYOUT_ortho_4x12(
-        XXXXXXX,     XXXXXXX,        KC_MPRV,        KC_MPLY,       KC_MNXT,        KC_VOLU,                                                      XXXXXXX,        KC_7,           KC_8,           KC_9,           KC_PAST,        XXXXXXX,
-        XXXXXXX,     XXXXXXX,        XXXXXXX,        XXXXXXX,       XXXXXXX,        KC_VOLD,                                                      XXXXXXX,        KC_4,           KC_5,           KC_6,           KC_PMNS,        XXXXXXX,
-        reset_kb,   tgl_boot,        XXXXXXX,        XXXXXXX,       XXXXXXX,        KC_MUTE,       _______,    _______,  _______,    _______,     KC_0,           KC_1,           KC_2,           KC_3,           KC_PPLS,        XXXXXXX,
+        _______,     XXXXXXX,        KC_MPRV,        KC_MPLY,       KC_MNXT,        KC_VOLU,                                                      XXXXXXX,        KC_7,           KC_8,           KC_9,           KC_PAST,        XXXXXXX,
+        _______,     XXXXXXX,        XXXXXXX,        XXXXXXX,       XXXXXXX,        KC_VOLD,                                                      XXXXXXX,        KC_4,           KC_5,           KC_6,           KC_PMNS,        XXXXXXX,
+        reset_kb,    tgl_boot,       XXXXXXX,        XXXXXXX,       XXXXXXX,        KC_MUTE,       _______,    _______,  _______,    _______,     KC_0,           KC_1,           KC_2,           KC_3,           KC_PPLS,        XXXXXXX,
                                                                     _______,        _______,       _______,    _______,  _______,    _______,     _______,        _______
     )
 };
@@ -152,6 +164,11 @@ void leader_end_user(void) {
 #endif /* LEADER */
 
 
+// Lower + Raise gives Adjust layer
+layer_state_t layer_state_set_user(layer_state_t state) {
+  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+}
+
 
 // PERMISSIVE HOLD MODE
 //  ref: https://docs.qmk.fm/#/tap_hold?id=permissive-hold
@@ -182,3 +199,70 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    
+    // stop dynamic macro recording without reset key.
+    // WIP : keymap.c:424:10: error: implicit declaration of function 'process_record_dynamic_macro'; did you mean 'process_dynamic_macro'?
+    // uint16_t macro_kc = (keycode == lowers_bs ? DM_RSTP : keycode);
+    // if (!process_record_dynamic_macro(macro_kc, record)) {
+    //     return false;
+    // }
+
+
+  // if (record->event.pressed) {
+  //   #ifdef OLED_ENABLE
+  //   set_keylog(keycode, record);
+  //   #endif
+  //   // set_timelog();
+  // }
+
+    // Mod Tap intercepted. Modded tap behaviour limitation override.
+    //  ref: https://docusaurus.qmk.fm/mod_tap#intercepting-mod-taps
+  switch (keycode) {
+    case LGUI_T(KC_EXLM):
+        if (record->tap.count && record->event.pressed) {
+            tap_code16(KC_EXLM); 
+            return false;        
+        }
+        break;
+    case LALT_T(KC_AT):
+        if (record->tap.count && record->event.pressed) {
+            tap_code16(KC_AT); 
+            return false;        
+        }
+        break;
+    case LSFT_T(KC_HASH):
+        if (record->tap.count && record->event.pressed) {
+            tap_code16(KC_HASH); 
+            return false;        
+        }
+        break;
+    case CTL_T(KC_DLR):
+        if (record->tap.count && record->event.pressed) {
+            tap_code16(KC_DLR); 
+            return false;        
+        }
+        break;
+    case MEH_T(KC_PERC):
+        if (record->tap.count && record->event.pressed) {
+            tap_code16(KC_PERC); 
+            return false;        
+        }
+        break;
+    // case FOO:
+    //   if (record->event.pressed) {
+    //     // Do something when pressed
+    //   } else {
+    //     // Do something else when release
+    //   }
+    //   return false; // Skip all further processing of this key
+    // case KC_ENTER:
+    //   // Play a tone when enter is pressed
+    //   if (record->event.pressed) {
+    //     PLAY_SONG(tone_qwerty);
+    //   }
+    //   return true; // Let QMK send the enter press/release events
+  }
+  return true; // Process all other keycodes normally
+}
