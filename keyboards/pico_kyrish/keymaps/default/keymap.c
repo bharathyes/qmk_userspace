@@ -33,16 +33,23 @@ enum layer_number {
 #define mo_raise        MO(_RAISE)
 #define mo_tg_raise     TT(_RAISE)
 #define ctrl_esc        LCTL_T(KC_ESC) 
+#define mo_nums         MO(_KEYPAD)
 #define kp_tab          LT(_KEYPAD, KC_TAB)
 #define kp_toggle       TG(_KEYPAD)
 #define mpv_toggle      TG(_MPV)
 #define lowers_bs       LT(_LOWER, KC_BSPC)
 #define l_shft          OSM(MOD_LSFT)
+#define spc_sft         LSFT_T(KC_SPC)
 #define ent_sft         LSFT_T(KC_ENT)
 
 #define esc             KC_ESC
 #define l_flower        LSFT(KC_LBRC)
 #define r_flower        LSFT(KC_RBRC)
+
+
+
+// mpv keybinds
+// #define mo_nums_playlist LT(_KEYPAD, RSFT(KC_ENT))
 
 // qmk keycodes
 #define tgl_boot        QK_BOOT     // put into bootloader mode for flashing
@@ -127,7 +134,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         kp_tab,     KC_Q,           KC_MPRV,        KC_MPLY,        KC_MNXT,        KC_VOLU,                                                            esc,               KC_KP_7,           KC_KP_8,           KC_KP_9,           KC_BSPC,        XXXXXXX,
         _______,    XXXXXXX,        XXXXXXX,        mpv_toggle,     kp_toggle,      KC_VOLD,                                                            KC_Q,              KC_KP_4,           KC_KP_5,           KC_KP_6,           KC_PGUP,        XXXXXXX,
         reset_kb,   tgl_boot,       XXXXXXX,        XXXXXXX,        XXXXXXX,        KC_MUTE,       _______,    _______,  RCTL(KC_DEL),    KC_DEL,       KC_KP_0,           KC_KP_1,           KC_KP_2,           KC_KP_3,           KC_PGDN,        XXXXXXX,
-                                                                    LALT_T(KC_ENT), KC_LGUI,       lowers_bs,  KC_SPC,   _______,         _______,      RSFT(KC_ENT),      XXXXXXX
+                                                                    LALT_T(KC_ENT), KC_LGUI,       lowers_bs,  KC_SPC,   spc_sft,         mo_raise,     RSFT(KC_ENT),      mo_nums
     )
 };
 
