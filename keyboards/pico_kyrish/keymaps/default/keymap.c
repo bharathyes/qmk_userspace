@@ -6,10 +6,11 @@
 
 enum layer_number {
   _COLEMAK = 0,
+  _MPV,
+  _KEYPAD,
   _LOWER,
   _RAISE,
   _ADJUST,
-  _KEYPAD,
 };
 
 
@@ -29,9 +30,12 @@ enum layer_number {
 
 
 // custom defined key codes
+#define mo_raise        MO(_RAISE)
 #define mo_tg_raise     TT(_RAISE)
 #define ctrl_esc        LCTL_T(KC_ESC) 
 #define kp_tab          LT(_KEYPAD, KC_TAB)
+#define kp_toggle       TG(_KEYPAD)
+#define mpv_toggle      TG(_MPV)
 #define lowers_bs       LT(_LOWER, KC_BSPC)
 #define l_shft          OSM(MOD_LSFT)
 #define ent_sft         LSFT_T(KC_ENT)
@@ -45,15 +49,45 @@ enum layer_number {
 #define reset_kb        QK_RBT      // reset keeb. does NOT put in bootloader
 
 
+// // Tap dance functionality
+
+// typedef enum {
+//     TD_NONE,
+//     TD_UNKNOWN,
+//     TD_SINGLE_TAP,
+//     TD_SINGLE_HOLD,
+//     TD_DOUBLE_TAP
+// } td_state_t;
+
+
+// typedef struct {
+//     bool is_press_action;
+//     td_state_t state;
+// } td_tap_t;
+
+
+// enum {
+//     TAB_KP_LYR,
+// }
+
+// td_state_t cur_dance(tap_dance_state_t *state);
+
+// void ql_finished(tap_dance_state_t *state, void *user_data);
+// void ql_reset(tap_dance_state_t *state, void *user_data);
+
+// tap_dance_action_t tap_dance_actions[] = {
+//     [TD_SFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
+// }
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // COLEMAK base layer
     [_COLEMAK] = LAYOUT_ortho_4x12(
-        kp_tab,     KC_Q,           KC_W,           KC_F,           KC_P,           KC_B,                                                          KC_J,           KC_L,           KC_U,           KC_Y,           KC_SCLN,        KC_QUOT,
-        ctrl_esc,   LGUI_T(KC_A),   LALT_T(KC_R),   LSFT_T(KC_S),   LCTL_T(KC_T),   MEH_T(KC_G),                                                   HYPR_T(KC_M),   LCTL_T(KC_N),   LSFT_T(KC_E),   LALT_T(KC_I),   LGUI_T(KC_O),   KC_MINS,
-        l_shft,     KC_Z,           KC_X,           KC_C,           KC_D,           KC_V,          ctrl_esc,   KC_DEL,   QK_LEAD,    KC_BSPC,      KC_K,           KC_H,           KC_COMM,        KC_DOT,         KC_SLSH,        KC_EQL,
-                                                                    LALT_T(KC_ENT), KC_LGUI,       lowers_bs,  KC_SPC,   ent_sft,    mo_tg_raise,  KC_LGUI,        KC_BSLS
+        kp_tab,          KC_Q,           KC_W,           KC_F,           KC_P,           KC_B,                                                          KC_J,           KC_L,           KC_U,           KC_Y,           KC_SCLN,        KC_QUOT,
+        ctrl_esc,        LGUI_T(KC_A),   LALT_T(KC_R),   LSFT_T(KC_S),   LCTL_T(KC_T),   MEH_T(KC_G),                                                   HYPR_T(KC_M),   LCTL_T(KC_N),   LSFT_T(KC_E),   LALT_T(KC_I),   LGUI_T(KC_O),   KC_MINS,
+        l_shft,          KC_Z,           KC_X,           KC_C,           KC_D,           KC_V,          ctrl_esc,   KC_DEL,   QK_LEAD,    KC_BSPC,      KC_K,           KC_H,           KC_COMM,        KC_DOT,         KC_SLSH,        KC_EQL,
+                                                                         LALT_T(KC_ENT), KC_LGUI,       lowers_bs,  KC_SPC,   ent_sft,    mo_tg_raise,  KC_LGUI,        KC_BSLS
     ),
 
     // Lower (Symbols & function keys)
@@ -82,10 +116,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // keypad with media control 
     [_KEYPAD] = LAYOUT_ortho_4x12(
-        _______,     XXXXXXX,        KC_MPRV,        KC_MPLY,       KC_MNXT,        KC_VOLU,                                                      XXXXXXX,        KC_7,           KC_8,           KC_9,           KC_PAST,        KC_PSLS,
-        _______,     XXXXXXX,        XXXXXXX,        XXXXXXX,       XXXXXXX,        KC_VOLD,                                                      XXXXXXX,        KC_4,           KC_5,           KC_6,           KC_PPLS,        KC_PMNS,
-        reset_kb,    tgl_boot,       XXXXXXX,        XXXXXXX,       XXXXXXX,        KC_MUTE,       _______,    _______,  _______,    _______,     KC_0,           KC_1,           KC_2,           KC_3,           KC_PDOT,        KC_PENT,
-                                                                    _______,        _______,       _______,    _______,  _______,    _______,     _______,        _______
+        _______,    XXXXXXX,        KC_MPRV,        KC_MPLY,        KC_MNXT,        KC_VOLU,                                                      XXXXXXX,        KC_7,           KC_8,           KC_9,           KC_PAST,        KC_PSLS,
+        _______,    XXXXXXX,        XXXXXXX,        mpv_toggle,     kp_toggle,      KC_VOLD,                                                      XXXXXXX,        KC_4,           KC_5,           KC_6,           KC_PPLS,        KC_PMNS,
+        reset_kb,   tgl_boot,       XXXXXXX,        XXXXXXX,        XXXXXXX,        KC_MUTE,       _______,    _______,  _______,    _______,     KC_0,           KC_1,           KC_2,           KC_3,           KC_PDOT,        KC_PENT,
+                                                                    LALT_T(KC_ENT), KC_LGUI,       lowers_bs,  KC_SPC,   ent_sft,    mo_tg_raise, KC_LGUI,        KC_BSLS
+    ),
+
+    // mpv movies
+    [_MPV] = LAYOUT_ortho_4x12(
+        kp_tab,     KC_Q,           KC_MPRV,        KC_MPLY,        KC_MNXT,        KC_VOLU,                                                            esc,               KC_KP_7,           KC_KP_8,           KC_KP_9,           KC_BSPC,        XXXXXXX,
+        _______,    XXXXXXX,        XXXXXXX,        mpv_toggle,     kp_toggle,      KC_VOLD,                                                            KC_Q,              KC_KP_4,           KC_KP_5,           KC_KP_6,           KC_PGUP,        XXXXXXX,
+        reset_kb,   tgl_boot,       XXXXXXX,        XXXXXXX,        XXXXXXX,        KC_MUTE,       _______,    _______,  RCTL(KC_DEL),    KC_DEL,       KC_KP_0,           KC_KP_1,           KC_KP_2,           KC_KP_3,           KC_PGDN,        XXXXXXX,
+                                                                    LALT_T(KC_ENT), KC_LGUI,       lowers_bs,  KC_SPC,   _______,         _______,      RSFT(KC_ENT),      XXXXXXX
     )
 };
 
@@ -266,3 +308,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true; // Process all other keycodes normally
 }
+
+
+// td_state_t cur_dance(tap_dance_state_t *state) {
+//     if (state->count == 1) {
+//         if (!state->pressed) return TD_SINGLE_TAP;
+//         else return TD_SINGLE_HOLD;
+//     } else if (state->count == 2) return TD_DOUBLE_TAP;
+//     else return TO_UNKNOWN;
+// }
+
+// static td_tap_t ql_tap_state = {
+//     .is_press_action = true,
+//     .state = TD_NONE
+// };
+
+// void ql_finished(tap_dance_state_t *state, void *user_data) {
+//     ql_tap_state.state = cur_dance(state);
+//     switch (ql_tap_state.state) {
+//         case TD_SINGLE_TAP:
+//             tap_code(KC_TAB);
+//             break;
+//         case TD_SINGLE_HOLD:
+//             layer_on(_KEYPAD);
+//             break;
+//         case TD_DOUBLE_TAP:
+//             if (layer_state_is(_KEYPAD)) {
+//                 layer_off(_KEYPAD);
+//             } else {
+//                 layer_on(_KEYPAD);
+//             }
+//             break;
+//         default:
+//             break;
+//     }
+// }

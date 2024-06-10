@@ -8,6 +8,7 @@
 
 // TAP HOLD
 #define TAPPING_TERM 200
+#define TAPPING_TERM_PER_KEY
 // #define TAPPING_TOGGLE 2  			// TT layer shift momentary OR toggle ON/OFF if tapped thrice
 // #define QUICK_TAP_TERM 0
 #define PERMISSIVE_HOLD
