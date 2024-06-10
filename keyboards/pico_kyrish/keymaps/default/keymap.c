@@ -53,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         kp_tab,     KC_Q,           KC_W,           KC_F,           KC_P,           KC_B,                                                          KC_J,           KC_L,           KC_U,           KC_Y,           KC_SCLN,        KC_QUOT,
         ctrl_esc,   LGUI_T(KC_A),   LALT_T(KC_R),   LSFT_T(KC_S),   LCTL_T(KC_T),   MEH_T(KC_G),                                                   HYPR_T(KC_M),   LCTL_T(KC_N),   LSFT_T(KC_E),   LALT_T(KC_I),   LGUI_T(KC_O),   KC_MINS,
         l_shft,     KC_Z,           KC_X,           KC_C,           KC_D,           KC_V,          ctrl_esc,   KC_DEL,   QK_LEAD,    KC_BSPC,      KC_K,           KC_H,           KC_COMM,        KC_DOT,         KC_SLSH,        KC_EQL,
-                                                                    LALT_T(KC_ENT), KC_LGUI,       lowers_bs,  KC_SPC,   ent_sft,    mo_tg_raise,  KC_LGUI,        KC_PSLS
+                                                                    LALT_T(KC_ENT), KC_LGUI,       lowers_bs,  KC_SPC,   ent_sft,    mo_tg_raise,  KC_LGUI,        KC_BSLS
     ),
 
     // Lower (Symbols & function keys)
@@ -82,9 +82,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // keypad with media control 
     [_KEYPAD] = LAYOUT_ortho_4x12(
-        _______,     XXXXXXX,        KC_MPRV,        KC_MPLY,       KC_MNXT,        KC_VOLU,                                                      XXXXXXX,        KC_7,           KC_8,           KC_9,           KC_PAST,        XXXXXXX,
-        _______,     XXXXXXX,        XXXXXXX,        XXXXXXX,       XXXXXXX,        KC_VOLD,                                                      XXXXXXX,        KC_4,           KC_5,           KC_6,           KC_PMNS,        XXXXXXX,
-        reset_kb,    tgl_boot,       XXXXXXX,        XXXXXXX,       XXXXXXX,        KC_MUTE,       _______,    _______,  _______,    _______,     KC_0,           KC_1,           KC_2,           KC_3,           KC_PPLS,        XXXXXXX,
+        _______,     XXXXXXX,        KC_MPRV,        KC_MPLY,       KC_MNXT,        KC_VOLU,                                                      XXXXXXX,        KC_7,           KC_8,           KC_9,           KC_PAST,        KC_PSLS,
+        _______,     XXXXXXX,        XXXXXXX,        XXXXXXX,       XXXXXXX,        KC_VOLD,                                                      XXXXXXX,        KC_4,           KC_5,           KC_6,           KC_PPLS,        KC_PMNS,
+        reset_kb,    tgl_boot,       XXXXXXX,        XXXXXXX,       XXXXXXX,        KC_MUTE,       _______,    _______,  _______,    _______,     KC_0,           KC_1,           KC_2,           KC_3,           KC_PDOT,        KC_PENT,
                                                                     _______,        _______,       _______,    _______,  _______,    _______,     _______,        _______
     )
 };
